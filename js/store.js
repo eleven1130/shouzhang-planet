@@ -135,7 +135,7 @@ window.JA = window.JA || {};
   /* 站长口令默认值（想改的话改这里，全站同步生效） */
   const OWNER_DEFAULT_KEY = 'hello';
   const DEFAULT = () => ({
-    v: 3,
+    v: 4,
     user: { name: 'eleven', id: 'u_me', avatar: { kind: 'emoji', value: '🌿' }, bio: '', tags: [] },
     points: RULES.INIT,
     ledger: [],
@@ -144,7 +144,7 @@ window.JA = window.JA || {};
     liked: {},             // workId -> true（我点过的赞）
     commentAward: {},      // workId -> 已计分评论条数
     suggestions: [],       // 建议箱留言
-    ownerMode: true,       // 是否是站长 eleven 本人（可回复大家的留言）
+    ownerMode: false,      // 是否是站长 eleven 本人（默认关：别人打开一律是访客）
     ownerKey: hashPw(OWNER_DEFAULT_KEY),  // 站长口令的散列，默认 hello，设置过之后别人就开不了站长模式
     seeded: false,
     seededSg: false,       // 建议箱种子内容
@@ -175,6 +175,12 @@ window.JA = window.JA || {};
     if (!oldVer || oldVer < 3) {
       s.v = 3;
       s.ownerKey = hashPw(OWNER_DEFAULT_KEY);
+    }
+    // v3 → v4：默认一律是访客。谁打开页面都不是站长，必须输口令才能进站长模式，
+    // 否则别人在自己手机上打开就直接能删留言、回复，不安全。
+    if (!oldVer || oldVer < 4) {
+      s.v = 4;
+      s.ownerMode = false;
     }
     // 结构兜底：任何字段缺失/损坏都退回默认值，避免整站崩掉
     if (!s.user || typeof s.user !== 'object') s.user = DEFAULT().user;

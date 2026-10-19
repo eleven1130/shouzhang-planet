@@ -139,6 +139,13 @@ body.paper-plain::after{display:none}
 .card + .card{margin-top:16px}
 .card h3{margin:0 0 4px;font-size:15px;display:flex;align-items:center;gap:8px}
 .card .sub{color:var(--c-ink-soft);font-size:12.5px;margin:0 0 14px}
+.kv{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:7px 0;border-bottom:1px dashed var(--c-line);font-size:13px;
+}
+.kv:last-child{border-bottom:0}
+.kv>span:first-child{color:var(--c-ink-soft)}
+.kv b{white-space:nowrap}
 
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid-side{display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:start}
@@ -387,3 +394,106 @@ input[type=range]{width:100%;accent-color:var(--c-primary)}
 .stat b{display:block;font-size:19px}
 .stat span{font-size:11.5px;color:var(--c-ink-soft)}
 @media(max-width:640px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ================= 手机端：紧凑、不横向溢出 ================= */
+@media(max-width:760px){
+  /* 页面本体绝不横向滚动：任何超宽元素都裁掉，不影响观感 */
+  #app{overflow-x:clip}
+
+  .container{padding:12px 12px 64px}
+
+  /* ---- 顶栏：导航改成可左右滑动的一条，不再把页面撑宽 ---- */
+  .topbar{
+    padding:8px 12px;gap:8px;
+    padding-top:calc(8px + env(safe-area-inset-top,0px));
+  }
+  .brand{gap:7px;font-size:15px;flex:0 0 auto}
+  .brand .logo{width:28px;height:28px;border-radius:9px;font-size:14px}
+  .brand .bn{font-size:14.5px;letter-spacing:.5px}
+  .brand .bb{font-size:10px;padding:1px 7px}
+  .nav{
+    margin-left:2px;flex:1 1 auto;min-width:0;
+    display:flex;gap:2px;overflow-x:auto;overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    scroll-snap-type:x proximity;
+  }
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{
+    flex:0 0 auto;white-space:nowrap;padding:6px 10px;font-size:12.5px;scroll-snap-align:center;
+  }
+  .points-chip{padding:4px 10px;gap:5px;flex:0 0 auto}
+  .points-chip b{font-size:14px}
+  .points-chip small{display:none}
+  .avatar{width:30px;height:30px;font-size:12px}
+
+  /* ---- Hero：收成一屏能看完的小块 ---- */
+  .hero{
+    padding:16px 14px 14px;border-radius:18px;margin-bottom:12px;
+  }
+  .hero-eyebrow{font-size:11px;padding:3px 10px;margin-bottom:8px}
+  .hero h1{font-size:19px;line-height:1.45;margin-bottom:6px;letter-spacing:.2px}
+  .hero p{
+    font-size:12.5px;line-height:1.65;max-width:none;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .hero .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
+  .hero .hero-actions .btn{
+    padding:8px 8px;font-size:12.5px;justify-content:center;min-width:0;
+  }
+  .hero-deco{width:118px;top:-8px;right:-14px;opacity:.42}
+
+  /* ---- 卡片与间距整体收紧 ---- */
+  .card{padding:13px 13px 14px;border-radius:16px}
+  .card + .card{margin-top:10px}
+  .card h3{font-size:14px;gap:6px}
+  .card .sub{font-size:12px;margin-bottom:10px}
+  .grid-2,.grid-side{gap:10px}
+  .grid-2{margin-top:10px !important}
+  .kv{font-size:12.5px;padding:6px 0}
+
+  /* ---- 瀑布流：手机上单列，卡片更窄更整齐 ---- */
+  .masonry{columns:1;column-gap:0}
+  .work-card{margin-bottom:10px}
+  .work-body{padding:10px 12px 11px}
+  .work-title{font-size:14px}
+  .work-meta{font-size:11.5px}
+  .work-actions{font-size:12px;gap:12px;padding-top:8px}
+
+  /* ---- 控件 ---- */
+  .btn{padding:8px 13px;font-size:13px}
+  .btn.sm{padding:6px 10px;font-size:12px}
+  .chips{gap:6px}
+  .chip{padding:5px 10px;font-size:12px}
+  .seg button{padding:5px 11px;font-size:12px}
+  .input,.textarea,.select{font-size:16px}   /* 16px 以上 iOS 才不会自动放大页面 */
+  .field{margin-bottom:10px}
+  .thumbs{gap:7px;margin-top:9px}
+  .thumb{width:62px;height:62px}
+  .uploader{padding:15px}
+  .uploader .big{font-size:22px}
+  .stage{padding:7px;border-radius:16px}
+  .cost-box{padding:9px 12px;font-size:12.5px;margin-top:10px}
+  .cost-box b{font-size:16px}
+  .instr-item,.sel-item{font-size:12px;padding:7px 9px}
+
+  /* ---- 弹窗 / 抽屉：贴满小屏 ---- */
+  .modal{width:94vw;max-height:90vh;padding:16px;border-radius:18px}
+  .modal-body{gap:12px}
+  .drawer{width:min(340px,92vw);padding:16px}
+  .theme-presets{grid-template-columns:repeat(2,1fr)}
+
+  /* ---- 页脚 ---- */
+  .site-foot{padding:18px 16px 26px;font-size:12px}
+}
+
+/* 超小屏（≤400px）再收一档，保证首屏一屏装得下 */
+@media(max-width:400px){
+  .hero{padding:14px 12px 12px}
+  .hero h1{font-size:17.5px}
+  .hero p{font-size:12px;-webkit-line-clamp:2}
+  .hero .hero-actions{gap:6px}
+  .hero .hero-actions .btn{font-size:12px;padding:7px 6px}
+  .brand .bb{display:none}
+  .points-chip{padding:4px 8px}
+  .container{padding:10px 10px 56px}
+}

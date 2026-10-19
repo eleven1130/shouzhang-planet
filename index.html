@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>eleven的手账星球 · 清新手账工坊</title>
 <link rel="stylesheet" href="css/style.css">
-  <!-- deploy 2026-10-19T16:11:26.127Z -->
+  <!-- deploy 2026-10-19T18:20:51.003Z -->
 </head>
 <body class="paper-dots">
 
@@ -91,7 +91,7 @@
           <h3>✨ 三种玩法</h3>
           <p class="sub">从素材到成品，一条龙</p>
           <div class="kv"><span>① 排版工坊</span><span class="muted">上传素材 → 选风格 → 下指令预留文字区</span></div>
-          <div class="kv"><span>② 美化分享</span><span class="muted">框选手写文字 → 风格化模糊 / 换印刷字体</span></div>
+          <div class="kv"><span>② 美化分享</span><span class="muted">自动认出手写字 → 只模糊它 / 换印刷字体</span></div>
           <div class="kv"><span>③ 灵感广场</span><span class="muted">匿名或署名发布 → 点赞评论赚积分</span></div>
           <div class="btn-row" style="margin-top:14px">
             <button class="btn sm primary" data-go="studio">去做排版</button>
@@ -177,15 +177,20 @@
           </div>
 
           <div class="card">
-            <h3>✍️ 2 · 处理指令</h3>
-            <p class="sub">说一句话，或直接在预览图上拖框选择要处理的文字区域</p>
+            <h3>✍️ 2 · 找出手写字</h3>
+            <p class="sub">自动认出哪里是手写笔迹，只处理这些地方；也可以自己在图上拖框</p>
+            <div class="btn-row" style="margin-bottom:10px">
+              <button class="btn sm primary" id="autoDetect">🔍 自动找出手写字 · 只模糊它们</button>
+              <button class="btn sm" id="autoDetectFont">🔤 自动找出 · 换成印刷字体</button>
+              <button class="btn sm ghost" id="clearSel">清空选区</button>
+            </div>
             <div class="chips" id="bQuick" style="margin-bottom:10px"></div>
             <div style="display:flex;gap:8px">
-              <input class="input" id="bInstr" placeholder="例如：模糊右下角的手写文字 / 标题换成圆体">
+              <input class="input" id="bInstr" placeholder="例如：把手写字换成文艺宋体">
               <button class="btn primary" id="addBInstr">添加</button>
             </div>
             <hr class="sep">
-            <div class="tiny muted" style="margin-bottom:8px">在右侧预览图上按住鼠标拖动 = 手动框选文字区域</div>
+            <div class="tiny muted" style="margin-bottom:8px">预览图上：手指/鼠标拖动 = 新框选 · 拖框内 = 移动 · 拖四角或四边的圆点 = 改大小 · 拖上方 ↻ = 旋转</div>
             <div id="selList"></div>
             <div class="cost-box">
               <span>本次预计消耗</span>
@@ -198,7 +203,7 @@
         <div>
           <div class="card">
             <h3>🖌 美化预览</h3>
-            <p class="sub">虚线框为待处理区域，拖动可新增</p>
+            <p class="sub">虚线框就是被认出来的手写区，手指可以直接拖它、改大小、旋转</p>
             <div class="stage">
               <canvas id="beautyCanvas" width="900" height="1200" class="crosshair"></canvas>
             </div>
@@ -238,7 +243,7 @@
         <p>想加什么功能、哪里用着别扭、或者只是想跟 eleven 说说话——都留在这里。每一条我都会亲自回复 💚</p>
         <div class="hero-actions">
           <button class="btn primary" id="sgFocus">✍️ 写一条建议</button>
-          <button class="btn" id="sgOwnerBtn">🔧 站长模式：开</button>
+          <button class="btn" id="sgOwnerBtn">🔐 eleven 登录</button>
         </div>
       </div>
 
