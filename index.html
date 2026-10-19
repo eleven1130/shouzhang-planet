@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eleven的手账星球 · 清新手账工坊</title>
+<link rel="stylesheet" href="css/style.css">
+  <!-- deploy 2026-10-19T16:11:26.127Z -->
+</head>
+<body class="paper-dots">
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">✎</span>
+      <span class="bn">手账星球</span>
+      <span class="bb">by eleven</span>
+    </div>
+    <nav class="nav">
+      <button data-go="home" class="active">灵感广场</button>
+      <button data-go="studio">排版工坊</button>
+      <button data-go="beauty">美化 · 分享</button>
+      <button data-go="suggest">建议箱</button>
+      <button data-go="me">我的小屋</button>
+    </nav>
+    <div class="spacer"></div>
+    <div class="points-chip" id="pointsChip" title="查看积分明细">🍃 <b id="pointsVal">0</b> <small>积分</small></div>
+    <div class="avatar" id="avatarBtn" title="设置我的头像与昵称"></div>
+  </header>
+
+  <div class="container">
+
+    <!-- ============ 灵感广场 ============ -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <svg class="hero-deco" viewBox="0 0 220 200" fill="none" aria-hidden="true">
+          <defs>
+            <filter id="softBlur" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="15"/>
+            </filter>
+          </defs>
+          <g filter="url(#softBlur)" opacity=".5">
+            <ellipse cx="152" cy="62" rx="56" ry="46" style="fill:var(--c-primary)"/>
+            <ellipse cx="86" cy="132" rx="44" ry="36" style="fill:var(--c-accent)" opacity=".8"/>
+            <ellipse cx="182" cy="140" rx="36" ry="30" style="fill:var(--c-primary)" opacity=".7"/>
+          </g>
+          <path d="M34 152c26-34 62-42 98-20" style="stroke:var(--c-primary)" stroke-width="3" stroke-linecap="round" opacity=".4"/>
+          <path d="M52 170c22-26 56-32 86-14" style="stroke:var(--c-accent)" stroke-width="3" stroke-linecap="round" opacity=".38"/>
+          <path d="M138 40c11-13 28-11 32 4 4 15-11 26-24 21-13-4-18-17-8-25z" style="fill:var(--c-accent)" opacity=".3"/>
+          <path d="M62 66c8-6 18-4 21 4 3 8-4 15-12 14-8-1-13-11-9-18z" style="fill:var(--c-primary)" opacity=".3"/>
+          <circle cx="98" cy="36" r="4" style="fill:var(--c-accent)" opacity=".45"/>
+          <circle cx="72" cy="44" r="2.6" style="fill:var(--c-primary)" opacity=".5"/>
+        </svg>
+        <div class="hero-eyebrow">🌿 在 eleven 的手账星球，慢慢写、慢慢贴</div>
+        <h1>未曾说出口的话，终会在纸上开出繁花</h1>
+        <p>上传素材自动生成多风格排版、按指令预留写字空间；分享时可风格化模糊手写文字、一键换成印刷字体。作品可以匿名或署名发布到广场，与大家一起点赞评论。</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-go="studio">✦ 开始生成排版图</button>
+          <button class="btn" data-go="beauty">✧ 美化并分享作品</button>
+          <button class="btn accent" id="publishBtn">📮 发布作品</button>
+          <button class="btn ghost" id="openTheme2">🎨 定制我的配色</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+          <h3 style="margin:0">🗂 大家的手账</h3>
+          <div class="spacer" style="flex:1"></div>
+          <div class="seg" id="sortSeg">
+            <button class="on" data-sort="new">最新</button>
+            <button data-sort="hot">最热</button>
+            <button data-sort="mine">我发布的</button>
+          </div>
+        </div>
+        <div class="masonry" id="feed"></div>
+        <div class="empty" id="feedEmpty" style="display:block">正在布置小广场…</div>
+      </div>
+
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card">
+          <h3>🍃 积分怎么算</h3>
+          <p class="sub">在这里，每一次创作与互动都会被温柔地记账</p>
+          <div class="kv"><span>生成排版图（按指令条数）</span><b>-5 ~ -10</b></div>
+          <div class="kv"><span>文字模糊 / 字体美化（按指令条数）</span><b>-5 ~ -10</b></div>
+          <div class="kv"><span>分享一次作品</span><b style="color:#3E9B74">+15</b></div>
+          <div class="kv"><span>点赞一个作品（同一作品仅一次）</span><b style="color:#3E9B74">+2</b></div>
+          <div class="kv"><span>发布一条评论（同一作品最多 5 条计分）</span><b style="color:#3E9B74">+4</b></div>
+          <div class="kv"><span>每个人的初始积分</span><b>100</b></div>
+        </div>
+        <div class="card">
+          <h3>✨ 三种玩法</h3>
+          <p class="sub">从素材到成品，一条龙</p>
+          <div class="kv"><span>① 排版工坊</span><span class="muted">上传素材 → 选风格 → 下指令预留文字区</span></div>
+          <div class="kv"><span>② 美化分享</span><span class="muted">框选手写文字 → 风格化模糊 / 换印刷字体</span></div>
+          <div class="kv"><span>③ 灵感广场</span><span class="muted">匿名或署名发布 → 点赞评论赚积分</span></div>
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn sm primary" data-go="studio">去做排版</button>
+            <button class="btn sm" id="openTheme3">换个配色</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 排版工坊 ============ -->
+    <section class="view" id="view-studio">
+      <div class="grid-side">
+        <div>
+          <div class="card">
+            <h3>🖼 1 · 手账素材</h3>
+            <p class="sub">把你拍好的素材传上来，一次可多选</p>
+            <div class="uploader" id="matUploader">
+              <div class="big">📷</div>
+              <div>点击上传素材图片</div>
+              <div class="tiny muted">支持多选，建议 2~8 张效果最好</div>
+            </div>
+            <input type="file" id="matInput" accept="image/*" multiple hidden>
+            <div class="thumbs" id="matThumbs"></div>
+          </div>
+
+          <div class="card">
+            <h3>🎨 2 · 排版风格</h3>
+            <p class="sub">选一个你喜欢的版式气质</p>
+            <div class="chips" id="styleChips"></div>
+          </div>
+
+          <div class="card">
+            <h3>📝 3 · 排版指令</h3>
+            <p class="sub">告诉它哪里要留白写字，写得越具体版式越贴心</p>
+            <div class="chips" id="quickChips" style="margin-bottom:10px"></div>
+            <div style="display:flex;gap:8px">
+              <input class="input" id="instrInput" placeholder="例如：右上角留出标题区，底部留一行日期">
+              <button class="btn primary" id="addInstr">添加</button>
+            </div>
+            <div class="instr-list" id="instrList"></div>
+            <div class="cost-box">
+              <span>本次预计消耗</span>
+              <span><b id="layoutCost">5</b> 积分 <span class="muted tiny">（底线 5，每多 1 条指令 +1，封顶 10）</span></span>
+            </div>
+            <button class="btn primary block" id="genLayout" style="margin-top:12px">✨ 生成排版图</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3>🖌 排版预览</h3>
+            <p class="sub">生成结果会出现在这里，可继续微调</p>
+            <div class="stage"><canvas id="layoutCanvas" width="900" height="1200"></canvas></div>
+            <div class="stage-hint" id="layoutHint">上传素材后即可生成 · 预留的文字区会用虚线框标出</div>
+            <div class="btn-row" style="margin-top:14px">
+              <button class="btn" id="saveLayout">保存到我的排版</button>
+              <button class="btn" id="downloadLayout">下载 PNG</button>
+              <button class="btn accent" id="toBeauty">拿去美化 & 分享 →</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>📚 我的排版图</h3>
+            <p class="sub">点击任意一张可以继续美化或直接分享</p>
+            <div class="thumbs" id="layoutLib"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 美化 · 分享 ============ -->
+    <section class="view" id="view-beauty">
+      <div class="grid-side">
+        <div>
+          <div class="card">
+            <h3>🖼 1 · 选择手账图</h3>
+            <p class="sub">可以是刚生成的排版图，也可以直接上传成品</p>
+            <div class="btn-row" style="margin-bottom:10px">
+              <button class="btn sm" id="pickFromLib">从我的排版图选</button>
+              <button class="btn sm" id="uploadWork">上传本地图片</button>
+            </div>
+            <input type="file" id="workInput" accept="image/*" hidden>
+            <div class="thumbs" id="libPicker"></div>
+          </div>
+
+          <div class="card">
+            <h3>✍️ 2 · 处理指令</h3>
+            <p class="sub">说一句话，或直接在预览图上拖框选择要处理的文字区域</p>
+            <div class="chips" id="bQuick" style="margin-bottom:10px"></div>
+            <div style="display:flex;gap:8px">
+              <input class="input" id="bInstr" placeholder="例如：模糊右下角的手写文字 / 标题换成圆体">
+              <button class="btn primary" id="addBInstr">添加</button>
+            </div>
+            <hr class="sep">
+            <div class="tiny muted" style="margin-bottom:8px">在右侧预览图上按住鼠标拖动 = 手动框选文字区域</div>
+            <div id="selList"></div>
+            <div class="cost-box">
+              <span>本次预计消耗</span>
+              <span><b id="beautyCost">5</b> 积分</span>
+            </div>
+            <button class="btn primary block" id="applyBeauty" style="margin-top:12px">🪄 应用美化</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3>🖌 美化预览</h3>
+            <p class="sub">虚线框为待处理区域，拖动可新增</p>
+            <div class="stage">
+              <canvas id="beautyCanvas" width="900" height="1200" class="crosshair"></canvas>
+            </div>
+            <div class="stage-hint" id="beautyHint">先选一张图</div>
+            <div class="btn-row" style="margin-top:14px">
+              <button class="btn" id="downloadBeauty">下载</button>
+              <button class="btn accent" id="openShare">分享到广场 →</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>🔧 选区设置</h3>
+            <p class="sub">选中左侧列表里的区域后，在这里调整效果</p>
+            <div id="selEditor"><div class="empty tiny">还没有选区</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 建议箱 ============ -->
+    <section class="view" id="view-suggest">
+      <div class="hero" style="padding:28px 34px">
+        <svg class="hero-deco" style="width:200px" viewBox="0 0 220 200" fill="none" aria-hidden="true">
+          <defs>
+            <filter id="softBlur2" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="15"/>
+            </filter>
+          </defs>
+          <g filter="url(#softBlur2)" opacity=".5">
+            <ellipse cx="158" cy="66" rx="52" ry="44" style="fill:var(--c-accent)"/>
+            <ellipse cx="92" cy="128" rx="44" ry="34" style="fill:var(--c-primary)" opacity=".8"/>
+          </g>
+          <path d="M46 96l64 40 64-40" style="stroke:var(--c-primary)" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+          <path d="M46 96v60a8 8 0 008 8h112a8 8 0 008-8V96l-64 40z" style="stroke:var(--c-primary)" stroke-width="3" stroke-linejoin="round" opacity=".45"/>
+          <circle cx="150" cy="44" r="4" style="fill:var(--c-accent)" opacity=".5"/>
+        </svg>
+        <h1 style="font-size:24px">💌 给 eleven 的建议箱</h1>
+        <p>想加什么功能、哪里用着别扭、或者只是想跟 eleven 说说话——都留在这里。每一条我都会亲自回复 💚</p>
+        <div class="hero-actions">
+          <button class="btn primary" id="sgFocus">✍️ 写一条建议</button>
+          <button class="btn" id="sgOwnerBtn">🔧 站长模式：开</button>
+        </div>
+      </div>
+
+      <div class="grid-side">
+        <div>
+          <div class="card">
+            <h3>📝 写下你的想法</h3>
+            <p class="sub">留言不消耗积分，也可以匿名</p>
+            <div class="field">
+              <label>类型</label>
+              <div class="chips" id="sgCate">
+                <button class="chip on" data-c="功能建议">功能建议</button>
+                <button class="chip" data-c="界面优化">界面优化</button>
+                <button class="chip" data-c="遇到问题">遇到问题</button>
+                <button class="chip" data-c="内容玩法">内容玩法</button>
+                <button class="chip" data-c="随便聊聊">随便聊聊</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>内容</label>
+              <textarea class="textarea" id="sgText" style="min-height:120px" placeholder="例如：希望排版图能导出 PDF～"></textarea>
+            </div>
+            <div class="field">
+              <label>署名方式</label>
+              <div class="seg" id="sgAnon">
+                <button class="on" data-a="0">公开我的名字</button>
+                <button data-a="1">匿名留言</button>
+              </div>
+            </div>
+            <div class="tiny muted" id="sgAs" style="margin-bottom:10px"></div>
+            <button class="btn primary block" id="sgSend">💌 投进建议箱</button>
+          </div>
+
+          <div class="card">
+            <h3>🏷 我的手账属性</h3>
+            <p class="sub">让大家一眼看懂你是什么风格的手账 er</p>
+            <div class="chips" id="sgMyTags"></div>
+            <button class="btn sm" id="sgEditTags" style="margin-top:12px">✏️ 编辑我的属性标签</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+              <h3 style="margin:0">📬 大家的留言 <span class="tiny muted" id="sgCount"></span></h3>
+              <div class="spacer" style="flex:1"></div>
+              <div class="seg" id="sgFilter">
+                <button class="on" data-f="all">全部</button>
+                <button data-f="wait">待回复</button>
+                <button data-f="replied">已回复</button>
+                <button data-f="mine">我留的</button>
+              </div>
+            </div>
+            <div id="sgList"></div>
+            <div class="empty" id="sgEmpty" style="display:none">这里还空着，来投第一条吧 🌱</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 我的小屋 ============ -->
+    <section class="view" id="view-me">
+      <div class="hero" style="padding:26px">
+        <h1 style="font-size:22px" id="meName">我的小屋</h1>
+        <p class="sub" id="meBio">管理头像、昵称、作品、积分流水与配色偏好</p>
+      </div>
+      <div class="stat-grid" id="meStats"></div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card">
+          <h3>📒 我的作品</h3>
+          <p class="sub">共 <span id="myWorkCount">0</span> 件</p>
+          <div class="thumbs" id="myWorks"></div>
+        </div>
+        <div class="card">
+          <h3>💰 积分流水</h3>
+          <p class="sub">每一笔增减都记着</p>
+          <div id="ledger" style="max-height:420px;overflow:auto"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>⚙️ 偏好与数据</h3>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn" id="openTheme4">🎨 定制配色与样式</button>
+          <button class="btn" id="renameBtn">👤 头像与昵称</button>
+          <button class="btn" id="resetBtn">🧹 清空本地数据</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- 主题抽屉 -->
+<div class="mask" id="mask"></div>
+<aside class="drawer" id="themeDrawer">
+  <h3>🎨 定制我的手账风格 <button class="icon-btn" data-close="themeDrawer">✕</button></h3>
+  <div class="theme-presets" id="presets"></div>
+  <hr class="sep">
+  <div class="color-row"><span>主色</span><input type="color" id="cPrimary"></div>
+  <div class="color-row"><span>点缀色</span><input type="color" id="cAccent"></div>
+  <div class="color-row"><span>页面底色</span><input type="color" id="cBg"></div>
+  <div class="color-row"><span>文字色</span><input type="color" id="cInk"></div>
+  <div class="color-row"><span>卡片圆角</span><span id="radiusVal">20px</span></div>
+  <input type="range" id="cRadius" min="0" max="30" step="2">
+  <hr class="sep">
+  <div class="field">
+    <label>页面底纹</label>
+    <select class="select" id="cPaper">
+      <option value="dots">圆点纸</option>
+      <option value="grid">方格纸</option>
+      <option value="lines">横线纸</option>
+      <option value="plain">纯净无纹</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>界面字体</label>
+    <select class="select" id="cFont">
+      <option value='"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei UI",sans-serif'>圆润黑体</option>
+      <option value='"Songti SC","STSong","SimSun",serif'>文艺宋体</option>
+      <option value='"Kaiti SC","STKaiti","KaiTi",serif'>清雅楷体</option>
+      <option value='"Hanzipen SC","STXingkai","Xingkai SC",cursive'>手写随性</option>
+      <option value='system-ui,-apple-system,"Segoe UI",sans-serif'>系统默认</option>
+    </select>
+  </div>
+  <button class="btn primary block" id="resetTheme">恢复默认清新风</button>
+</aside>
+
+<!-- 积分抽屉 -->
+<aside class="drawer" id="pointsDrawer">
+  <h3>💰 积分明细 <button class="icon-btn" data-close="pointsDrawer">✕</button></h3>
+  <div id="ledger2"></div>
+</aside>
+
+<!-- 作品详情 -->
+<div class="modal" id="workModal">
+  <div class="modal-head">
+    <h3 id="wmTitle">作品详情</h3>
+    <button class="icon-btn" data-close="workModal">✕</button>
+  </div>
+  <div class="modal-body">
+    <div><img class="bigimg" id="wmImg"></div>
+    <div>
+      <div id="wmMeta" class="tiny muted" style="margin-bottom:10px"></div>
+      <div id="wmDesc" style="font-size:13px;margin-bottom:12px"></div>
+      <div class="btn-row" style="margin-bottom:14px">
+        <button class="btn sm" id="wmL">♡ 点赞</button>
+        <span class="tiny muted" id="wmTip"></span>
+      </div>
+      <div id="wmCmts" style="max-height:220px;overflow:auto;margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px">
+        <input class="input" id="wmCmtInput" placeholder="说点温柔的话…">
+        <button class="btn primary sm" id="wmSend">发送</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 分享弹窗 -->
+<div class="modal" id="shareModal">
+  <div class="modal-head">
+    <h3>📮 分享到灵感广场</h3>
+    <button class="icon-btn" data-close="shareModal">✕</button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div id="shImgBox">
+        <img class="bigimg" id="shImg">
+        <div class="uploader" id="shEmpty" style="padding:36px 20px">
+          <div class="big">🖼</div>
+          <div>还没有图片</div>
+          <div class="tiny muted">支持手账，也可以是摄影、绘画等任何有图的作品</div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:10px;justify-content:center">
+        <button class="btn sm" id="shUpload">🖼 上传 / 更换图片</button>
+      </div>
+      <input type="file" id="shFile" accept="image/*" hidden>
+      <div class="tiny muted" style="margin-top:8px;text-align:center">作品必须包含一张图片，暂不支持纯文字发布</div>
+    </div>
+    <div>
+      <div class="field">
+        <label>作品类型</label>
+        <div class="chips" id="shCate">
+          <button class="chip on" data-c="手账手作">手账手作</button>
+          <button class="chip" data-c="摄影">摄影</button>
+          <button class="chip" data-c="绘画插画">绘画插画</button>
+          <button class="chip" data-c="生活日常">生活日常</button>
+          <button class="chip" data-c="其他">其他</button>
+        </div>
+      </div>
+      <div class="field"><label>作品标题</label><input class="input" id="shTitle" placeholder="例如：十月的第一周"></div>
+      <div class="field"><label>想说的话</label><textarea class="textarea" id="shDesc" placeholder="记录一下这一页的心情…"></textarea></div>
+      <div class="field"><label>标签（逗号分隔）</label><input class="input" id="shTags" placeholder="日常,秋日,拼贴"></div>
+      <div class="field">
+        <label>署名方式</label>
+        <div class="seg" id="shAnon">
+          <button class="on" data-anon="0">公开我的名字</button>
+          <button data-anon="1">匿名发布</button>
+        </div>
+      </div>
+      <div class="cost-box"><span>分享奖励</span><span><b style="color:#3E9B74">+15</b> 积分</span></div>
+      <button class="btn primary block" id="doShare" style="margin-top:12px">🚀 发布作品</button>
+    </div>
+  </div>
+</div>
+
+<!-- 头像与昵称 -->
+<div class="modal" id="avatarModal">
+  <div class="modal-head">
+    <h3>👤 我的资料</h3>
+    <button class="icon-btn" data-close="avatarModal">✕</button>
+  </div>
+  <div class="modal-body">
+    <div style="text-align:center">
+      <div class="avatar-big" id="avPreview"></div>
+      <div class="tiny muted" style="margin-top:10px">可以上传自己的图片，也可以挑一个喜欢的图标</div>
+      <div class="chips" id="avEmojis" style="justify-content:center;margin-top:12px"></div>
+      <div class="btn-row" style="justify-content:center;margin-top:12px">
+        <button class="btn sm" id="avUploadBtn">上传头像图片</button>
+      </div>
+      <input type="file" id="avFile" accept="image/*" hidden>
+      <hr class="sep">
+      <div style="text-align:left">
+        <div class="field" style="margin-bottom:0">
+          <label>昵称</label>
+          <input class="input" id="avName" placeholder="想让大家怎么称呼你">
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field"><label>个人签名（可选）</label><textarea class="textarea" id="avBio" placeholder="写一句话介绍自己…"></textarea></div>
+      <div class="field">
+        <label>我的手账属性（可多选）</label>
+        <div class="chips" id="avTagPresets"></div>
+      </div>
+      <div class="field">
+        <label>自定义属性</label>
+        <div style="display:flex;gap:8px">
+          <input class="input" id="avTagInput" placeholder="例如：什么都做点，可爱风">
+          <button class="btn" id="avTagAdd">添加</button>
+        </div>
+        <div class="chips" id="avTagList" style="margin-top:10px"></div>
+      </div>
+      <div class="tiny muted">属性标签会跟着你出现在作品、留言和评论里；选择匿名时别人看不到这些。</div>
+      <button class="btn primary block" id="avSave" style="margin-top:12px">保存</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div>🌿 <b>手账星球</b> · 一个由 eleven 慢慢打理的小地方</div>
+  <div class="tiny muted">有任何想法都可以去「建议箱」找我，我都会看 💚</div>
+</footer>
+
+<!-- 站长口令 -->
+<div class="modal sm" id="ownerKeyModal">
+  <div class="modal-head">
+    <h3 id="okTitle">🔐 站长口令</h3>
+    <button class="icon-btn" data-close="ownerKeyModal">✕</button>
+  </div>
+  <div class="field"><label id="okLabel">输入口令以开启站长模式</label>
+    <input class="input" id="okInput" type="password" placeholder="只有 eleven 本人知道" autocomplete="off">
+  </div>
+  <div class="tiny muted" id="okTip" style="margin-bottom:12px"></div>
+  <div class="btn-row" style="justify-content:flex-end">
+    <button class="btn" data-close="ownerKeyModal">取消</button>
+    <button class="btn primary" id="okConfirm">确认</button>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script src="js/store.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/beauty.js"></script>
+<script src="js/community.js"></script>
+<script src="js/suggest.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
